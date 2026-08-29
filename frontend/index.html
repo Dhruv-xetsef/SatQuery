@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SatQuery AI - Interactive Remote Sensing Vision-Language Assistant</title>
+    <meta name="description" content="Agentic Vision-Language Assistant for Multimodal Remote Sensing Analysis, Bi-temporal Change Detection, and Optical-SAR Fusion.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- TOP NAVIGATION BAR -->
+        <header class="top-nav">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="ph-bold ph-planet"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>SatQuery <span>AI</span></h1>
+                    <p class="tagline">Multimodal Earth Observation Agent</p>
+                </div>
+            </div>
+
+            <div class="nav-status">
+                <div class="status-badge online">
+                    <span class="status-dot"></span>
+                    <span>BigEarthNet VLM Adapter Active</span>
+                </div>
+                <div class="status-badge info">
+                    <i class="ph-bold ph-cpu"></i>
+                    <span>PyTorch RS Engine</span>
+                </div>
+            </div>
+
+            <div class="nav-actions">
+                <button id="btn-benchmark" class="btn btn-secondary">
+                    <i class="ph-bold ph-chart-bar"></i> Benchmark Suite
+                </button>
+                <button id="btn-tools" class="btn btn-secondary">
+                    <i class="ph-bold ph-wrench"></i> Model Registry
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN THREE-COLUMN WORKSPACE -->
+        <main class="workspace">
+            <!-- LEFT PANEL: INPUT INTELLIGENCE & QUERY BUILDER -->
+            <aside class="panel left-panel">
+                <div class="panel-header">
+                    <h2><i class="ph-bold ph-sliders"></i> Mission Controls</h2>
+                </div>
+
+                <!-- Input Mode Tabs -->
+                <div class="input-mode-selector">
+                    <button class="mode-tab active" data-mode="single_optical">Single Image</button>
+                    <button class="mode-tab" data-mode="bitemporal">Bi-Temporal (T1/T2)</button>
+                    <button class="mode-tab" data-mode="crossmodal">Optical + SAR</button>
+                </div>
+
+                <!-- File Upload Box -->
+                <div class="upload-section">
+                    <label class="section-label">Satellite Imagery Inputs (.tif, .png)</label>
+                    <div class="drop-zone" id="drop-zone">
+                        <i class="ph-duotone ph-cloud-arrow-up drop-icon"></i>
+                        <p class="drop-title">Drag & Drop GeoTIFF / Images</p>
+                        <p class="drop-subtitle">Supports GeoTIFF, TIFF, PNG, JPEG</p>
+                        <input type="file" id="file-input" multiple accept=".tif,.tiff,.png,.jpg,.jpeg">
+                        <button class="btn btn-sm btn-outline">Browse Files</button>
+                    </div>
+
+                    <div class="selected-files-list" id="selected-files-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Preset Queries -->
+                <div class="preset-section">
+                    <label class="section-label"><i class="ph-bold ph-sparkle"></i> Quick Representative Queries</label>
+                    <div class="preset-pills" id="preset-pills">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Query Input Form -->
+                <div class="query-section">
+                    <label for="query-input" class="section-label">Natural Language Query</label>
+                    <textarea id="query-input" rows="3" placeholder="Ask a question, e.g. 'Describe the land-cover and major objects visible in this image...'"></textarea>
+
+                    <div class="task-selector">
+                        <label for="force-task-select">Target Task Model Override:</label>
+                        <select id="force-task-select">
+                            <option value="auto">🤖 Auto-Agent Orchestration</option>
+                            <option value="vqa_caption">RS-VQA & Scene Description (BigEarthNet)</option>
+                            <option value="grounding">Text-Guided Region Grounding (VRSBench)</option>
+                            <option value="change_vqa">Bi-Temporal Change Analysis (CDVQA)</option>
+                            <option value="optical_sar">Cross-Modal Optical-SAR Fusion (ISRO)</option>
+                        </select>
+                    </div>
+
+                    <button id="btn-submit" class="btn btn-primary btn-block">
+                        <i class="ph-bold ph-lightning"></i> Execute SatQuery Agent
+                    </button>
+                </div>
+            </aside>
+
+            <!-- CENTER VIEW: INTERACTIVE EARTH VIEW & VISUAL EVIDENCE -->
+            <section class="panel center-panel">
+                <div class="view-tabs">
+                    <button class="view-tab active" data-view="image-view"><i class="ph-bold ph-image"></i> Earth Viewer</button>
+                    <button class="view-tab" data-view="graph-view"><i class="ph-bold ph-tree-structure"></i> Evidence Graph</button>
+                    <button class="view-tab" data-view="trace-view"><i class="ph-bold ph-terminal-window"></i> Execution Trace</button>
+                </div>
+
+                <!-- Tab 1: Image Viewer -->
+                <div class="tab-content active" id="view-image-view">
+                    <div class="viewer-container">
+                        <div class="viewer-header">
+                            <div class="viewer-title" id="viewer-title">Visual Evidence Viewer</div>
+                            <div class="layer-toggles" id="layer-toggles">
+                                <button class="layer-btn active" data-layer="primary">Primary Evidence</button>
+                                <button class="layer-btn" data-layer="uncertainty">Uncertainty Heatmap</button>
+                            </div>
+                        </div>
+
+                        <div class="viewer-stage" id="viewer-stage">
+                            <img id="main-evidence-img" src="/sample_data/single_optical.png" alt="Evidence Display">
+                            <div class="scanner-overlay hidden" id="scanner-overlay">
+                                <div class="scan-line"></div>
+                                <div class="scan-text">SatQuery AI Scanning Spatial Bands...</div>
+                            </div>
+                        </div>
+
+                        <div class="viewer-footer" id="viewer-footer">
+                            <span class="meta-item"><i class="ph-bold ph-frame-corners"></i> Bounds: Bangalore Urban</span>
+                            <span class="meta-item"><i class="ph-bold ph-arrows-out font-icon"></i> Resolution: 10m GSD</span>
+                            <span class="meta-item"><i class="ph-bold ph-globe"></i> CRS: EPSG:4326</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Evidence Graph View -->
+                <div class="tab-content" id="view-graph-view">
+                    <div class="graph-container">
+                        <div class="graph-header">
+                            <h3><i class="ph-bold ph-tree-structure"></i> Evidence Graph ("Why Do We Believe This?")</h3>
+                            <p>Directed Acyclic Graph linking Query -> Task -> Entity -> Region -> Modality -> Hypothesis</p>
+                        </div>
+                        <div class="graph-nodes-list" id="graph-nodes-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Execution Trace View -->
+                <div class="tab-content" id="view-trace-view">
+                    <div class="trace-container">
+                        <div class="trace-header">
+                            <h3><i class="ph-bold ph-terminal-window"></i> Agentic Pipeline Observable Trace</h3>
+                        </div>
+                        <div class="trace-timeline" id="trace-timeline">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL: AI ANALYSIS & INVESTIGATION COPILOT -->
+            <aside class="panel right-panel">
+                <div class="panel-header">
+                    <h2><i class="ph-bold ph-brain"></i> AI Analysis & Intelligence</h2>
+                </div>
+
+                <div class="analysis-scroll">
+                    <!-- Answer Card -->
+                    <div class="card answer-card">
+                        <div class="card-title">
+                            <i class="ph-bold ph-chat-circle-text"></i> Evidence-Grounded Answer
+                        </div>
+                        <div class="answer-text" id="answer-text">
+                            Click 'Execute SatQuery Agent' or select a preset query to run multimodal remote sensing analysis.
+                        </div>
+                        <div class="evidence-justification" id="evidence-justification">
+                            Evidence provenance: Standby for execution.
+                        </div>
+                    </div>
+
+                    <!-- Reliability Score Meter -->
+                    <div class="card trust-card">
+                        <div class="card-title">
+                            <i class="ph-bold ph-shield-check"></i> Trust & Uncertainty Engine
+                        </div>
+                        <div class="trust-meter-container">
+                            <div class="trust-score-display">
+                                <span class="trust-number" id="trust-number">95.0%</span>
+                                <span class="trust-badge high" id="trust-rating">HIGH TRUST</span>
+                            </div>
+                            <div class="trust-bar-bg">
+                                <div class="trust-bar-fill" id="trust-bar-fill" style="width: 95%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="trust-breakdown" id="trust-breakdown">
+                            <div class="trust-metric">
+                                <span>Model Confidence:</span>
+                                <span id="m-conf">94.0%</span>
+                            </div>
+                            <div class="trust-metric">
+                                <span>Cross-Model Agreement:</span>
+                                <span id="m-agree">95.0%</span>
+                            </div>
+                            <div class="trust-metric">
+                                <span>Spatial Consistency:</span>
+                                <span id="m-spatial">96.0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Beyond Your Query Discoveries -->
+                    <div class="card discovery-card">
+                        <div class="card-title">
+                            <i class="ph-bold ph-binoculars"></i> Beyond Your Query (Discovery Engine)
+                        </div>
+                        <div class="discovery-list" id="discovery-list">
+                            <div class="discovery-item">
+                                <strong>Secondary Scan Ready</strong>
+                                <p>Autonomous scanner will run background anomaly checks upon query submission.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Investigation Copilot -->
+                    <div class="card copilot-card">
+                        <div class="card-title">
+                            <i class="ph-bold ph-compass"></i> Investigation Copilot
+                        </div>
+                        <p class="copilot-subtitle">Suggested Next Questions:</p>
+                        <div class="copilot-suggestions" id="copilot-suggestions">
+                            <button class="copilot-btn">Show exactly where the change occurred.</button>
+                            <button class="copilot-btn">Does SAR radar confirm this?</button>
+                            <button class="copilot-btn">What is the largest changed region?</button>
+                        </div>
+                    </div>
+
+                    <!-- PDF Report Download Button -->
+                    <a id="download-pdf-btn" href="#" class="btn btn-outline btn-block disabled" download>
+                        <i class="ph-bold ph-file-pdf"></i> Download PDF Audit Report
+                    </a>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- MODAL: MODEL REGISTRY -->
+    <div class="modal-backdrop hidden" id="tools-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="ph-bold ph-wrench"></i> Specialist Model Registry</h3>
+                <button class="modal-close" id="close-tools-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="tools-modal-body">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: BENCHMARK EVALUATION -->
+    <div class="modal-backdrop hidden" id="benchmark-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="ph-bold ph-chart-bar"></i> Remote Sensing Benchmark Evaluation Suite</h3>
+                <button class="modal-close" id="close-benchmark-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Evaluation across BigEarthNet, VRSBench, RSVQA, CDVQA, and ISRO/SAC test datasets:</p>
+                <div class="benchmark-results-container" id="benchmark-results-container">
+                    <button class="btn btn-primary" id="run-benchmarks-now">Run Full Evaluation Suite</button>
+                    <div id="benchmark-scores-list" class="benchmark-scores-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

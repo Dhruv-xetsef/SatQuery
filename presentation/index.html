@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SatQuery AI - Interactive Project Presentation & Architectural Blueprint</title>
+    <meta name="description" content="Interactive presentation explaining the architecture, problem statement alignment, 14-step agentic flowchart, specialist VLM models, real-world utility, and benchmark results for SatQuery AI.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="presentation-wrapper">
+        <!-- TOP NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo-box">
+                    <i class="ph-bold ph-planet"></i>
+                </div>
+                <div>
+                    <span class="brand-title">SatQuery <span>AI</span></span>
+                    <span class="brand-sub">Project Architecture Presentation</span>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#flowchart">14-Step Flowchart</a>
+                <a href="#models">Specialist Models</a>
+                <a href="#usecases">Real-World Utility</a>
+                <a href="#benchmarks">Benchmarks</a>
+            </div>
+
+            <a href="/" target="_blank" class="btn btn-primary btn-sm">
+                <i class="ph-bold ph-rocket-launch"></i> Launch SatQuery Web App
+            </a>
+        </nav>
+
+        <!-- HERO SECTION -->
+        <header class="hero">
+            <div class="hero-badge">
+                <span class="badge-dot"></span> Official ISRO SAC Problem Statement & Flowchart Implementation
+            </div>
+            <h1 class="hero-title">
+                Interactive Multimodal Remote Sensing <br>
+                <span>Vision-Language Assistant</span>
+            </h1>
+            <p class="hero-subtitle">
+                An agentic platform enabling non-expert users to query, grounding, analyze bi-temporal change, and fuse optical-SAR satellite imagery through plain natural language.
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <span class="stat-num">14/14</span>
+                    <span class="stat-lbl">Flowchart Pipeline Steps</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num">93.16%</span>
+                    <span class="stat-lbl">Benchmark Score</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num">4 Core</span>
+                    <span class="stat-lbl">Specialist AI Tools</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num">132 ms</span>
+                    <span class="stat-lbl">Avg Response Latency</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION 1: PROBLEM STATEMENT & HOW IT WAS MADE -->
+        <section id="overview" class="section">
+            <div class="section-header">
+                <span class="section-tag">Background & Rationale</span>
+                <h2>How We Solved the Problem Statement</h2>
+                <p>Translating complex GIS workflows and satellite characteristics into natural language intelligence.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card glass-card">
+                    <div class="card-icon cyan"><i class="ph-bold ph-warning-circle"></i></div>
+                    <h3>The Problem Statement Challenge</h3>
+                    <p>
+                        Remote sensing imagery (Optical multispectral & SAR radar) is critical for monitoring Earth processes. However, legacy AI tools operate in isolation (single task: only detection or only classification).
+                    </p>
+                    <ul class="check-list">
+                        <li><i class="ph-bold ph-x-circle text-danger"></i> Users forced to understand GIS projections, CRS, GSD, and sensor bands.</li>
+                        <li><i class="ph-bold ph-x-circle text-danger"></i> Single optical images fail under heavy cloud cover or night acquisition.</li>
+                        <li><i class="ph-bold ph-x-circle text-danger"></i> Bi-temporal change detection requires tedious manual GIS registration.</li>
+                        <li><i class="ph-bold ph-x-circle text-danger"></i> Lack of auditability, confidence metrics, or spatial evidence masks.</li>
+                    </ul>
+                </div>
+
+                <div class="card glass-card accent-border">
+                    <div class="card-icon emerald"><i class="ph-bold ph-check-circle"></i></div>
+                    <h3>The SatQuery AI Solution</h3>
+                    <p>
+                        We built a multi-layered agentic system powered by fine-tuned VLM adapters, dynamic mission planners, and multi-modal evidence fusion.
+                    </p>
+                    <ul class="check-list">
+                        <li><i class="ph-bold ph-check-circle text-success"></i> <strong>Natural Language Queries:</strong> "What changed?", "Highlight water", "Describe land cover".</li>
+                        <li><i class="ph-bold ph-check-circle text-success"></i> <strong>Optical + SAR Fusion:</strong> Penetrates up to 100% cloud cover via SAR backscatter.</li>
+                        <li><i class="ph-bold ph-check-circle text-success"></i> <strong>Bi-Temporal Differencing:</strong> Automated change map overlays & trend analysis.</li>
+                        <li><i class="ph-bold ph-check-circle text-success"></i> <strong>High-Trust Auditability:</strong> 0-100% Reliability score, DAG evidence graphs & PDF reports.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: INTERACTIVE 14-STEP FLOWCHART IMPLEMENTATION -->
+        <section id="flowchart" class="section">
+            <div class="section-header">
+                <span class="section-tag">Architectural Blueprint</span>
+                <h2>14-Step Flowchart Implementation</h2>
+                <p>Click on any stage below to inspect the code implementation, data flow, and functional role.</p>
+            </div>
+
+            <div class="flowchart-interactive-grid">
+                <!-- STEP CARDS (1 to 14) -->
+                <div class="flow-card active" data-step="1">
+                    <span class="step-num">Step 01</span>
+                    <h4>Perception Layer</h4>
+                    <p>Input Intelligence & CRS Inspection</p>
+                </div>
+                <div class="flow-card" data-step="2">
+                    <span class="step-num">Step 02</span>
+                    <h4>Query Engine</h4>
+                    <p>NL Parsing & Intent Extraction</p>
+                </div>
+                <div class="flow-card" data-step="3">
+                    <span class="step-num">Step 03</span>
+                    <h4>Agent Mission Planner</h4>
+                    <p>Dynamic Task Graph & Tool Selection</p>
+                </div>
+                <div class="flow-card" data-step="4">
+                    <span class="step-num">Step 04</span>
+                    <h4>Model Registry</h4>
+                    <p>4 Specialist Tools & VLM Adapter</p>
+                </div>
+                <div class="flow-card" data-step="5">
+                    <span class="step-num">Step 05</span>
+                    <h4>Evidence Fusion</h4>
+                    <p>Text + Spatial + SAR Alignment</p>
+                </div>
+                <div class="flow-card" data-step="6">
+                    <span class="step-num">Step 06</span>
+                    <h4>Evidence Graph</h4>
+                    <p>DAG "Why Do We Believe This?"</p>
+                </div>
+                <div class="flow-card" data-step="7">
+                    <span class="step-num">Step 07</span>
+                    <h4>Trust Engine</h4>
+                    <p>0-100% Reliability & Uncertainty Map</p>
+                </div>
+                <div class="flow-card" data-step="8">
+                    <span class="step-num">Step 08</span>
+                    <h4>Discovery Engine</h4>
+                    <p>"Beyond Your Query" Secondary Scan</p>
+                </div>
+                <div class="flow-card" data-step="9">
+                    <span class="step-num">Step 09</span>
+                    <h4>Investigation Copilot</h4>
+                    <p>Contextual Suggested Next Questions</p>
+                </div>
+                <div class="flow-card" data-step="10">
+                    <span class="step-num">Step 10</span>
+                    <h4>Evidence Generator</h4>
+                    <p>Masks, BBoxes & Change Overlays</p>
+                </div>
+                <div class="flow-card" data-step="11">
+                    <span class="step-num">Step 11</span>
+                    <h4>Answer Generator</h4>
+                    <p>NL Synthesis & Spatial Statistics</p>
+                </div>
+                <div class="flow-card" data-step="12">
+                    <span class="step-num">Step 12</span>
+                    <h4>Audit Trace & PDF</h4>
+                    <p>Observable Trace & PDF Report</p>
+                </div>
+                <div class="flow-card" data-step="13">
+                    <span class="step-num">Step 13</span>
+                    <h4>SatQuery Web GUI</h4>
+                    <p>Earth Viewer & Layer Toggles</p>
+                </div>
+                <div class="flow-card" data-step="14">
+                    <span class="step-num">Step 14</span>
+                    <h4>Benchmark Suite</h4>
+                    <p>BigEarthNet, VRSBench, CDVQA, ISRO</p>
+                </div>
+            </div>
+
+            <!-- STEP DETAILS DISPLAY PANEL -->
+            <div class="step-details-box" id="step-details-box">
+                <div class="details-header">
+                    <h3 id="step-title">Step 01: Perception Layer (Input Intelligence)</h3>
+                    <span class="code-badge" id="step-file">backend/perception.py & backend/utils_geotiff.py</span>
+                </div>
+                <p class="details-desc" id="step-desc">
+                    Validates satellite image formats (.tif, .png), extracts geospatial CRS (EPSG projection) and Ground Sample Distance (GSD), normalizes multispectral RGB/SAR channels, and auto-detects relationship modes (Single Optical, Bi-temporal Pair, or Optical+SAR Co-registered Pair).
+                </p>
+                <div class="details-grid">
+                    <div class="detail-col">
+                        <h5>Inputs Received:</h5>
+                        <ul id="step-inputs">
+                            <li>Raw GeoTIFF / PNG Satellite Files</li>
+                            <li>Multispectral / SAR Band Arrays</li>
+                        </ul>
+                    </div>
+                    <div class="detail-col">
+                        <h5>Outputs Produced:</h5>
+                        <ul id="step-outputs">
+                            <li>Normalized RGB Tensor Array</li>
+                            <li>GSD Resolution & CRS Metadata</li>
+                            <li>Relationship Mode (Single/Bi-temporal/Cross-modal)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CORE SPECIALIST MODELS & BENCHMARKS -->
+        <section id="models" class="section">
+            <div class="section-header">
+                <span class="section-tag">Specialist Tool Suite</span>
+                <h2>4 Domain-Specific AI Models</h2>
+                <p>Trained and adapted on public remote sensing benchmarks for high-precision inference.</p>
+            </div>
+
+            <div class="grid-4">
+                <div class="model-card">
+                    <div class="model-badge">BigEarthNet & RSVQA</div>
+                    <h4>1. Scene VQA & Captioning</h4>
+                    <p>PyTorch ResNet-18 vision adapter predicting 19 land-cover taxonomy classes across Sentinel optical/SAR tiles.</p>
+                    <div class="metric-pill">Accuracy: 88.75%</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-badge">VRSBench Standard</div>
+                    <h4>2. Text-Guided Grounding</h4>
+                    <p>Delineates target objects (water bodies, urban zones, forests) into normalized bounding boxes & emerald green masks.</p>
+                    <div class="metric-pill">Accuracy: 93.30%</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-badge">CDVQA Benchmark</div>
+                    <h4>3. Bi-Temporal Change Tool</h4>
+                    <p>Computes structural difference between dates T1 and T2, outputs land-cover trend (INCREASED / UNCHANGED) & JET change heatmap.</p>
+                    <div class="metric-pill">Accuracy: 94.70%</div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-badge">ISRO / BigEarthNet</div>
+                    <h4>4. Cross-Modal Fusion</h4>
+                    <p>Fuses optical RGB spectral bands with SAR microwave backscatter to penetrate clouds and map urban/water structures.</p>
+                    <div class="metric-pill">Accuracy: 95.90%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: REAL-WORLD UTILITY & WHERE IT CAN BE USED -->
+        <section id="usecases" class="section">
+            <div class="section-header">
+                <span class="section-tag">Practical Applications</span>
+                <h2>Where SatQuery AI Can Be Used</h2>
+                <p>Operational deployment across civil, environmental, and strategic space agencies.</p>
+            </div>
+
+            <div class="usecase-grid">
+                <div class="usecase-card">
+                    <div class="usecase-icon"><i class="ph-duotone ph-plant"></i></div>
+                    <h3>1. Agricultural & Vegetation Monitoring</h3>
+                    <p>Track crop health, deforestation, seasonal canopy shifts, and drought severity using BigEarthNet multi-label vegetation taxonomy.</p>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-icon"><i class="ph-duotone ph-waves"></i></div>
+                    <h3>2. Disaster Management & Flood Tracking</h3>
+                    <p>Penetrate storm cloud cover using SAR radar backscatter to delineate inundated flood zones and assess infrastructure damage.</p>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-icon"><i class="ph-duotone ph-buildings"></i></div>
+                    <h3>3. Urban Planning & Infrastructure Growth</h3>
+                    <p>Quantify urban expansion trends over bi-temporal dates (T1 vs T2), identifying unauthorized building construction and land conversion.</p>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-icon"><i class="ph-duotone ph-shield-checkered"></i></div>
+                    <h3>4. Strategic Surveillance & Maritime Security</h3>
+                    <p>Detect vessel activity, coastal shoreline erosion, and remote facility shifts through cross-modal joint optical-SAR reasoning.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: BENCHMARKS & HIGH TRUST AUDITABILITY -->
+        <section id="benchmarks" class="section">
+            <div class="section-header">
+                <span class="section-tag">High-Trust Architecture</span>
+                <h2>Auditable Execution & Reliability Metrics</h2>
+                <p>Every query execution is traceable, observable, and validated against confidence metrics.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="card glass-card">
+                    <h3><i class="ph-bold ph-shield-check text-success"></i> Trust & Uncertainty Engine</h3>
+                    <p>Computes an aggregated Reliability Score (0-100%) based on four weighted pillars:</p>
+                    <div class="trust-pillar-list">
+                        <div class="pillar-item">
+                            <span>Model Inference Confidence</span>
+                            <strong>40% Weight</strong>
+                        </div>
+                        <div class="pillar-item">
+                            <span>Cross-Model Agreement Rate</span>
+                            <strong>25% Weight</strong>
+                        </div>
+                        <div class="pillar-item">
+                            <span>Spatial CRS/GSD Consistency</span>
+                            <strong>20% Weight</strong>
+                        </div>
+                        <div class="pillar-item">
+                            <span>Temporal Alignment Stability</span>
+                            <strong>15% Weight</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card glass-card">
+                    <h3><i class="ph-bold ph-file-pdf text-danger"></i> ReportLab PDF Audit Reports</h3>
+                    <p>Generates downloadable, tamper-evident execution reports for space agency audits.</p>
+                    <ul class="check-list" style="margin-top: 15px;">
+                        <li><i class="ph-bold ph-check-square"></i> Natural language query & intent summary</li>
+                        <li><i class="ph-bold ph-check-square"></i> Specialist model parameters & IoU threshold</li>
+                        <li><i class="ph-bold ph-check-square"></i> Multi-modal evidence provenance log</li>
+                        <li><i class="ph-bold ph-check-square"></i> Land-cover taxonomy score distribution</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>SatQuery AI</h3>
+                    <p>Multimodal Earth Observation Agentic Intelligence Platform</p>
+                </div>
+                <div class="footer-actions">
+                    <a href="/" target="_blank" class="btn btn-primary">Launch GUI Web Application</a>
+                </div>
+            </div>
+            <div class="footer-copy">
+                Designed & Built according to the ISRO SAC Remote Sensing Problem Statement & Flowchart Specifications.
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
