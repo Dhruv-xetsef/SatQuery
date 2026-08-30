@@ -1,0 +1,17 @@
+{
+  "change_vqa_accuracy": 1.0,
+  "total_samples": 2,
+  "correct_samples": 2,
+  "details": [
+    {
+      "query": "What changed between these two dates, and where did the change occur?",
+      "matched": true,
+      "confidence": 0.8254
+    },
+    {
+      "query": "Has the built-up area increased, decreased, or remained unchanged?",
+      "matched": true,
+      "confidence": 0.8254
+    }
+  ]
+}

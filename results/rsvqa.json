@@ -1,0 +1,17 @@
+{
+  "rsvqa_accuracy": 1.0,
+  "total_samples": 2,
+  "correct_samples": 2,
+  "details": [
+    {
+      "query": "Describe the land-cover and major objects visible in this image.",
+      "matched": true,
+      "confidence": 0.45
+    },
+    {
+      "query": "What type of land cover dominates the scene?",
+      "matched": true,
+      "confidence": 0.45
+    }
+  ]
+}

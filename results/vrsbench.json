@@ -1,0 +1,38 @@
+{
+  "grounding_iou": 0.5265,
+  "total_samples": 2,
+  "details": [
+    {
+      "query": "Highlight the water body referred to in the query.",
+      "pred_box": [
+        0.0,
+        0.38,
+        1.0,
+        0.52
+      ],
+      "gt_box": [
+        0.0,
+        0.38,
+        1.0,
+        0.52
+      ],
+      "iou": 1.0
+    },
+    {
+      "query": "Highlight the urban built-up area.",
+      "pred_box": [
+        0.0,
+        0.38,
+        1.0,
+        0.52
+      ],
+      "gt_box": [
+        0.05,
+        0.05,
+        0.38,
+        0.42
+      ],
+      "iou": 0.053
+    }
+  ]
+}

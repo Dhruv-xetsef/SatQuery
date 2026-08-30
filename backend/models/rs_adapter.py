@@ -5,6 +5,7 @@ import torchvision.models as models
 import torchvision.transforms as transforms
 from PIL import Image
 import numpy as np
+from typing import Tuple, Dict, Any, List
 
 BIGEARTHNET_CLASSES = [
     "Urban fabric (Continuous/Discontinuous)",
@@ -31,12 +32,15 @@ BIGEARTHNET_CLASSES = [
 class BigEarthNetVisionAdapter(nn.Module):
     """
     Vision-Language Domain Adapter Fine-Tuned / Adapted on BigEarthNet Remote Sensing Dataset.
-    Extracts deep visual features and predicts multi-label land-cover taxonomy distribution.
+    Extracts spatial feature maps, global visual embeddings, and multi-label land-cover taxonomy distribution.
     """
-    def __init__(self, num_classes=len(BIGEARTHNET_CLASSES), checkpoint_path=None):
+    def __init__(self, num_classes: int = len(BIGEARTHNET_CLASSES), checkpoint_path: str = None):
         super(BigEarthNetVisionAdapter, self).__init__()
         base_resnet = models.resnet18(weights=None)
-        self.backbone = nn.Sequential(*list(base_resnet.children())[:-1])
+        
+        # Spatial feature extractor (up to layer4, shape: [B, 512, H/32, W/32])
+        self.backbone_features = nn.Sequential(*list(base_resnet.children())[:-2])
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         
         self.projection_head = nn.Sequential(
             nn.Linear(512, 256),
@@ -53,34 +57,49 @@ class BigEarthNetVisionAdapter(nn.Module):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
 
-        if checkpoint_path and os.path.exists(checkpoint_path):
+        # Default checkpoint location
+        if not checkpoint_path:
+            checkpoint_path = "backend/models/bigearthnet_adapter.pth"
+
+        if os.path.exists(checkpoint_path):
             try:
-                self.load_state_dict(torch.load(checkpoint_path, map_location="cpu"))
+                self.load_state_dict(torch.load(checkpoint_path, map_location="cpu"), strict=False)
                 print(f"[BigEarthNet Adapter] Successfully loaded checkpoint weights from: {checkpoint_path}")
             except Exception as e:
-                print(f"[BigEarthNet Adapter] Error loading checkpoint: {e}. Using initialized model.")
+                print(f"[BigEarthNet Adapter] Warning loading checkpoint: {e}. Using initialized weights.")
         else:
-            print("[BigEarthNet Adapter] Checkpoint path not found. Running initialized adapter.")
+            print(f"[BigEarthNet Adapter] Checkpoint path '{checkpoint_path}' not found. Using initialized model.")
 
         self.eval()
 
-    def forward(self, x):
-        feat = self.backbone(x)
-        feat = torch.flatten(feat, 1)
-        probs = self.projection_head(feat)
-        return feat, probs
-
-    def analyze_image(self, image_rgb: np.ndarray):
+    def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         """
-        Runs forward pass on numpy RGB image [H, W, 3] and returns predictions + embeddings.
+        Forward pass.
+        Returns:
+            feature_map: [B, 512, H_feat, W_feat]
+            pooled_embedding: [B, 512]
+            class_probs: [B, num_classes]
+        """
+        feat_map = self.backbone_features(x)
+        pooled = self.avgpool(feat_map)
+        pooled_flat = torch.flatten(pooled, 1)
+        probs = self.projection_head(pooled_flat)
+        return feat_map, pooled_flat, probs
+
+    def analyze_image(self, image_rgb: np.ndarray) -> Dict[str, Any]:
+        """
+        Runs forward pass on numpy RGB image [H, W, 3].
+        Returns class probabilities, feature map, and embeddings.
         """
         tensor_img = self.transform(image_rgb).unsqueeze(0)
         with torch.no_grad():
-            feat, probs = self.forward(tensor_img)
-            probs = probs.squeeze(0).numpy()
+            feat_map, pooled, probs = self.forward(tensor_img)
+            probs_np = probs.squeeze(0).numpy()
+            feat_map_np = feat_map.squeeze(0).numpy()
+            pooled_np = pooled.squeeze(0).numpy()
 
         results = []
-        for idx, score in enumerate(probs):
+        for idx, score in enumerate(probs_np):
             results.append({
                 "class": BIGEARTHNET_CLASSES[idx],
                 "score": float(score)
@@ -89,5 +108,6 @@ class BigEarthNetVisionAdapter(nn.Module):
         results.sort(key=lambda x: x["score"], reverse=True)
         return {
             "predictions": results,
-            "embedding": feat.squeeze(0).numpy().tolist()
+            "embedding": pooled_np,
+            "feature_map": feat_map_np
         }

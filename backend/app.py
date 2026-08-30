@@ -1,5 +1,6 @@
 import os
 import shutil
+from typing import List, Optional
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -7,7 +8,6 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from backend.agent import SatQueryAgent
 from backend.registry import ToolRegistry
-from eval_benchmarks import run_benchmark_evaluation
 
 app = FastAPI(
     title="SatQuery AI Backend",
@@ -55,7 +55,7 @@ def health_check():
         "status": "online",
         "system": "SatQuery AI Multimodal Agent",
         "version": "2.0.0",
-        "device": "CPU / Multithreaded PyTorch"
+        "device": "CPU / PyTorch RS Backbone"
     }
 
 @app.get("/api/tools")
@@ -104,13 +104,12 @@ def get_presets():
         ]
     }
 
-from typing import List, Optional
-
 @app.post("/api/analyze")
 async def analyze(
     query: str = Form(...),
     force_task: str = Form("auto"),
     sample_preset: Optional[str] = Form(None),
+    use_baseline: bool = Form(False),
     files: List[UploadFile] = File(default=[])
 ):
     image_paths = []
@@ -135,7 +134,7 @@ async def analyze(
             image_paths = [os.path.join(SAMPLE_DIR, "single_optical.tif")]
 
     try:
-        results = agent.process_query(query, image_paths, force_task=force_task)
+        results = agent.process_query(query, image_paths, force_task=force_task, use_baseline=use_baseline)
         return JSONResponse(content=results)
     except Exception as e:
         import traceback
@@ -144,5 +143,6 @@ async def analyze(
 
 @app.get("/api/benchmark/run")
 def run_benchmark():
-    res = run_benchmark_evaluation()
+    from evaluation.evaluate_all import run_all_evaluations
+    res = run_all_evaluations()
     return res

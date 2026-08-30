@@ -1,0 +1,15 @@
+{
+  "dataset_name": "BigEarthNet-S2-Adapter",
+  "num_classes": 19,
+  "image_resolution": [224, 224],
+  "batch_size": 32,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "epochs": 5,
+  "train_val_split": 0.8,
+  "backbone": "resnet18",
+  "checkpoint_save_dir": "backend/models",
+  "checkpoint_name": "bigearthnet_adapter.pth",
+  "optimizer": "AdamW",
+  "loss_function": "BCEWithLogitsLoss"
+}

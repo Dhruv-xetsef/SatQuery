@@ -1,13 +1,15 @@
-# SatQuery AI - Multimodal Remote Sensing AI Assistant Dependencies
 torch>=2.0.0
 torchvision>=0.15.0
 numpy>=1.24.0
 opencv-python>=4.7.0
 pillow>=9.5.0
+scikit-learn>=1.2.0
+matplotlib>=3.7.0
 rasterio>=1.3.0
-fastapi>=0.100.0
-uvicorn>=0.22.0
+fastapi>=0.95.0
+uvicorn>=0.21.0
 python-multipart>=0.0.6
-reportlab>=3.6.0
-requests>=2.31.0
-pydantic>=2.0.0
+reportlab>=3.6.12
+pytest>=7.3.0
+timm>=0.9.0
+open_clip_torch>=2.20.0

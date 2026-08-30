@@ -1,0 +1,26 @@
+name: machine_learning
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pytorch=2.13
+  - torchvision
+  - numpy
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - pillow
+  - opencv
+  - rasterio
+  - pandas
+  - pytest
+  - pip
+  - pip:
+    - fastapi
+    - uvicorn
+    - python-multipart
+    - reportlab
+    - timm
+    - open_clip_torch

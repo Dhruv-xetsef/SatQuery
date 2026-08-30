@@ -35,10 +35,10 @@ class SatQueryAgent:
         self.audit_tracer = AuditTraceGenerator()
         self.exports_dir = exports_dir
 
-    def process_query(self, query: str, image_paths: list, force_task: str = "auto") -> dict:
+    def process_query(self, query: str, image_paths: list, force_task: str = "auto", use_baseline: bool = False) -> dict:
         start_time = time.time()
 
-        # Step 1: Input Load & Perception Layer
+        # Step 1: Input Perception Layer
         images_rgb = []
         image_metadatas = []
         for path in image_paths:
@@ -46,17 +46,39 @@ class SatQueryAgent:
             images_rgb.append(rgb)
             image_metadatas.append(meta)
 
-        perception_plan = self.perception.inspect_and_validate(image_metadatas)
-        perception_plan["metadatas"] = image_metadatas
-
         # Step 2: Query Understanding Engine
         query_plan = self.query_engine.parse_query(query, num_images=len(image_paths), force_task=force_task)
+
+        # Step 1 (cont): Perception validation using query context
+        perception_plan = self.perception.inspect_and_validate(image_metadatas, requested_task=query_plan["task_type"])
+        perception_plan["metadatas"] = image_metadatas
+
+        # Validation failure handling
+        if not perception_plan.get("passed", True):
+            err_msg = perception_plan["errors"][0] if perception_plan.get("errors") else "Input validation failed."
+            execution_time_ms = round((time.time() - start_time) * 1000, 2)
+            return {
+                "status": "FAILED",
+                "error": err_msg,
+                "text_response": f"Input Validation Error: {err_msg}",
+                "query": query,
+                "task_type": query_plan["task_type"],
+                "intent": query_plan["intent"],
+                "confidence": 0.0,
+                "reliability_score": 0.0,
+                "execution_time_ms": execution_time_ms,
+                "perception": perception_plan,
+                "query_analysis": query_plan,
+                "visual_artifacts": []
+            }
 
         # Step 3: Agentic Mission Planner
         mission_plan = self.planner.plan_mission(query_plan, perception_plan)
 
         # Step 4: Model Registry Execution
-        tool_output = self.registry.route_and_execute(query_plan["task_type"], images_rgb, query, image_metadatas)
+        tool_output = self.registry.route_and_execute(
+            query_plan["task_type"], images_rgb, query, image_metadatas, use_baseline=use_baseline
+        )
 
         # Step 5: Multi-Modal Evidence Fusion
         fusion_output = self.fusion.fuse_evidence(query_plan, tool_output, perception_plan)
@@ -93,10 +115,12 @@ class SatQueryAgent:
         pdf_url = f"/exports/{pdf_filename}"
 
         return {
+            "status": "SUCCESS",
             "query": query,
             "task_type": query_plan["task_type"],
             "intent": query_plan["intent"],
             "specialist_tool": tool_output["specialist_tool"],
+            "is_baseline": tool_output.get("is_baseline", False),
             "confidence": tool_output["confidence"],
             "reliability_score": trust_output["reliability_score"],
             "reliability_rating": trust_output["reliability_rating"],

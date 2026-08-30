@@ -1,0 +1,7 @@
+{
+  "rsvqa_accuracy": 1.0,
+  "grounding_iou": 0.5265,
+  "change_f1": 0.6906,
+  "change_vqa_accuracy": 1.0,
+  "optical_sar_f1": 0.3239
+}
